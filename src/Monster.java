@@ -26,7 +26,7 @@ public class Monster {
     }
     
     public boolean isAlive() {
-    	if (_hp < 0) {
+    	if (_hp <= 0) {
     		status = false;
     	} else {
     		status = true;

@@ -8,11 +8,14 @@ public class Lab11 {
 		Scanner sc = new Scanner(System.in);
 		char choice = ' ';
 		int dmg = 0, hit = 0, tempGold = 0;
+		boolean run = false;
 		
 		do {
 			//Monster monster = generateMonster(_rng);
-			Monster monster = new Goblin();
+			Monster monster = new Dragon();
+			System.out.println("....................");
 			System.out.println("You encounter a " + monster.getName() + "!");
+			run = false;
 			
 			do {
 				System.out.printf("HP: %d MP: %d\n", player.getHP(), player.getMP());
@@ -27,22 +30,52 @@ public class Lab11 {
 					System.out.printf("You dealt %d points of damage, and you received %d points.\n", dmg, hit);
 					player.setHP(hit);
 					break;
+				case 'B': case 'b':
+					dmg = player.beserk(monster);
+					hit = 2 * monster.attack(dmg);
+					System.out.printf("You dealt %d points of damage, and you received %d points.\n", dmg, hit);
+					player.setHP(hit);
+					break;
+				case 'M': case 'm':
+					dmg = 0;
+					hit = monster.attack(dmg);
+					player.setHP(-1);
+					player.setMP(1);
+					System.out.println("You feel revitalized!");
+					System.out.printf("You are healed! But the monster attacks for %d points\n", hit);
+					player.setHP(hit);
+					break;
+				case 'R': case 'r':
+					dmg = 5000;
+					hit = monster.attack(dmg);
+					System.out.printf("You run away! But the monster attacks for %d points\n", hit);
+					player.setHP(hit);
+					run = true;
+					break;
 				}
 				
-				if(monster.isAlive() == false) {
+				if (player.isAlive() == false) {
+					System.out.println("You have been vanquished by the " + monster.getName()+"...");
+					System.out.println("RIPEROONS!");
+					return;
+				}
+				if (monster.isAlive() == false && run == false) {
 					System.out.println("You have defeated the " + monster.getName() + "!");
 					tempGold = monster.getGold();
 					System.out.printf("You have gained %d gold pieces!\n", tempGold);
-;					player.setGold(tempGold);
-					System.out.println("Total Gold: " + player.getGold());
+					player.setGold(tempGold);
+					//System.out.println("Total Gold: " + player.getGold());
+				}
+				if (monster.getName() == "Dragon" && run == false && monster.isAlive() == false) {
+					System.out.println(". . . . . . . . . .\nYou have completed your quest!\n");
+					return;
 				}
 			} while (monster.isAlive() == true);
 		} while (player.isAlive() == true);
-		
-
 	}
-
-	public static Monster generateMonster(Random _rng) {
+	
+	// Randomly generates monster type
+	public static Monster generateMonster(Random _rng) { 
 		Monster _m = null;
 		int monsterType = _rng.nextInt(11);
     	switch (monsterType){

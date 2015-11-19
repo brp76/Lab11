@@ -13,23 +13,30 @@ public class Player {
 		return damage;
 	}
 	
+	public int beserk(Monster m) {
+		int damage = _rng.nextInt(15) + 1;
+		damage *= 3;
+		return damage;
+	}
+
 	public void setHP(int hit) {
+		if (hit == -1) {
+			_hp = 100;
+			return;
+		}
 		_hp -= hit;
+	}
+	
+	public void setMP(int mana) {
+		_mp -= mana;
 	}
 	
 	public void setGold(int hoard) {
 		_gold += hoard;
 	}
 	
-	/*public int beserk(Monster m) {
-		int damage = _rng.nextInt(15) + 1;
-		damage *= 3;
-		
-		return damage;
-	}*/
-
 	public boolean isAlive() {
-    	if (_hp < 0) {
+    	if (_hp <= 0) {
     		status = false;
     	} else {
     		status = true;
