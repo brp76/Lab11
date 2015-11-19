@@ -10,15 +10,27 @@ public class Lab11 {
 		int dmg = 0, hit = 0, tempGold = 0;
 		boolean run = false;
 		
+		System.out.println("------------- Instructions -------------");
+		System.out.println("Player: " + 
+				"\n\tAttack   - Random number of hit points damage (between 1 and 15)." +
+				"\n\tBerserk  - 3X Attack, 1/2X Defense." +
+				"\n\tMagic    - Heal to full health for 1 MP. Still vunerable during use." +
+				"\n\tRun Away - Run from monster. Still vunerable for one attack.");
+		System.out.println("Monsters: " + 
+				"\n\tGoblin   - DMG: 1-5   HP: 10" +
+				"\n\tTroll    - DMG: 1-10  HP: 30" +
+				"\n\tDragon   - DMG: 1-100 HP: 100" +
+				"\n\tDefeat the Dragon to complete your quest!");
+		
 		do {
 			Monster monster = generateMonster(_rng);
-			System.out.println("....................");
+			System.out.println("........................................");
 			System.out.println("You encounter a " + monster.getName() + "!");
 			run = false;
 			
 			do {
 				System.out.printf("HP: %d MP: %d\n", player.getHP(), player.getMP());
-				System.out.printf("Monster HP: %d\n", monster.getHP());
+				System.out.printf("%s HP: %d\n", monster.getName(), monster.getHP());
 				System.out.print("(A)ttack\n(B)erserk\n(M)agic\n(R)un Away\nYour choice > ");
 				choice = sc.next().charAt(0);
 				
@@ -41,17 +53,23 @@ public class Lab11 {
 				case 'M': case 'm':
 					dmg = 0;
 					hit = monster.attack(dmg);
-					player.setHP(-1);
-					player.setMP(1);
-					System.out.println("You feel revitalized!");
-					System.out.printf("You are healed! But the monster attacks for %d points\n", hit);
-					player.setHP(hit);
+					if (player.getMP() > 0) {
+						player.setHP(-1); // Heal to 100
+						player.setMP(1); // Drain mana
+						System.out.println("You feel revitalized!");
+						System.out.printf("You are healed! But the %s attacks for %d points.\n", monster.getName(), hit);
+						player.setHP(hit);
+					} else {
+						System.out.println("You are out of MP...");
+						System.out.printf("You stand there awkwardly, and the %s attacks for %d points.\n", monster.getName(), hit);
+						player.setHP(hit);
+					}
 					break;
 				// Run Away
 				case 'R': case 'r':
 					dmg = 5000;
 					hit = monster.attack(dmg);
-					System.out.printf("You run away! But the monster attacks for %d points\n", hit);
+					System.out.printf("You run away! But the %s attacks for %d points.\n", monster.getName(), hit);
 					player.setHP(hit);
 					run = true;
 					break;
@@ -75,7 +93,7 @@ public class Lab11 {
 				
 				// Victory
 				if (monster.getName() == "Dragon" && run == false && monster.isAlive() == false) {
-					System.out.println(". . . . . . . . . .\nYou have completed your quest!\n");
+					System.out.println(". . . . . . . . . . . . . . . . . . . .\nYou have completed your quest!\n");
 					monster = new Goblin();
 					System.out.println("Goblins defeated: " + monster.getDefeats());
 					monster = new Troll();
