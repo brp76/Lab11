@@ -10,12 +10,15 @@ public class Player {
 	
 	public int attack(Monster m) {
 		int damage = _rng.nextInt(15) + 1;
-		
-		int hit = m.attack(damage);
-		
-		_hp -= hit;
-		
 		return damage;
+	}
+	
+	public void setHP(int hit) {
+		_hp -= hit;
+	}
+	
+	public void setGold(int hoard) {
+		_gold += hoard;
 	}
 	
 	/*public int beserk(Monster m) {
@@ -40,5 +43,9 @@ public class Player {
 	
 	public int getMP() {
 		return _mp;
+	}
+	
+	public int getGold() {
+		return _gold;
 	}
 }

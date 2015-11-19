@@ -5,15 +5,37 @@ public class Lab11 {
 	public static void main(String[] args) {
 		Player player = new Player();
 		Random _rng = new Random();
+		Scanner sc = new Scanner(System.in);
+		char choice = ' ';
+		int dmg = 0, hit = 0, tempGold = 0;
 		
 		do {
-			Monster monster = generateMonster(_rng);
+			//Monster monster = generateMonster(_rng);
+			Monster monster = new Goblin();
 			System.out.println("You encounter a " + monster.getName() + "!");
-			System.out.printf("HP: %d MP: %d\n", player.getHP(), player.getMP());
-			System.out.printf("Monster HP: %d\n", monster.getHP());
-			System.exit(0);
+			
 			do {
+				System.out.printf("HP: %d MP: %d\n", player.getHP(), player.getMP());
+				System.out.printf("Monster HP: %d\n", monster.getHP());
+				System.out.print("(A)ttack\n(B)erserk\n(M)agic\n(R)un Away\nYour choice > ");
+				choice = sc.next().charAt(0);
 				
+				switch (choice) {
+				case 'A': case 'a':
+					dmg = player.attack(monster);
+					hit = monster.attack(dmg);
+					System.out.printf("You dealt %d points of damage, and you received %d points.\n", dmg, hit);
+					player.setHP(hit);
+					break;
+				}
+				
+				if(monster.isAlive() == false) {
+					System.out.println("You have defeated the " + monster.getName() + "!");
+					tempGold = monster.getGold();
+					System.out.printf("You have gained %d gold pieces!\n", tempGold);
+;					player.setGold(tempGold);
+					System.out.println("Total Gold: " + player.getGold());
+				}
 			} while (monster.isAlive() == true);
 		} while (player.isAlive() == true);
 		

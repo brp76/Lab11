@@ -20,6 +20,7 @@ public class Goblin extends Monster {
 
     	int damage = _rng.nextInt(5) + 1;
     	
+    	
 		return damage;
     }
     

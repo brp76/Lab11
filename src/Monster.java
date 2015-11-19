@@ -2,13 +2,13 @@ import java.util.*;
 
 public class Monster {
 
-    public int _hp = 0;
+	public int _hp = 0;
     
     public boolean status = true;
 
     public Random _rng = new Random();
     
-    //public Hoard _hoard = new Hoard();
+    public Hoard _hoard = new Hoard();
     
     public Monster(){
     }
@@ -37,4 +37,8 @@ public class Monster {
     public int getHP() {
 		return _hp;
 	}
+
+    public int getGold() {
+    	return _hoard.getGold();
+    }
 }
