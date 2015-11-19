@@ -14,14 +14,17 @@ public class Goblin extends Monster {
     public int attack(int hit) {
     	_hp -= hit;
 
-    	if (_hp < 0) {
+    	if (_hp <= 0) {
     		_defeats++;
     	}
 
+    	// Deal 1-5 damage to player
     	int damage = _rng.nextInt(5) + 1;
-    	
     	
 		return damage;
     }
     
+    public int getDefeats(){
+    	return _defeats;
+    }
 }

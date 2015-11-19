@@ -10,13 +10,6 @@ public class Monster {
     
     public Hoard _hoard = new Hoard();
     
-    public Monster(){
-    }
-    
-  /*  public Monster getMonster() {
-    	return _m;
-    }*/
-    
     public String getName() {
     	return "Monster";
     }
@@ -41,4 +34,9 @@ public class Monster {
     public int getGold() {
     	return _hoard.getGold();
     }
+    
+    public int getDefeats(){
+    	return 0;
+    }
+    
 }

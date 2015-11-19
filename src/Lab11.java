@@ -11,8 +11,7 @@ public class Lab11 {
 		boolean run = false;
 		
 		do {
-			//Monster monster = generateMonster(_rng);
-			Monster monster = new Dragon();
+			Monster monster = generateMonster(_rng);
 			System.out.println("....................");
 			System.out.println("You encounter a " + monster.getName() + "!");
 			run = false;
@@ -24,18 +23,21 @@ public class Lab11 {
 				choice = sc.next().charAt(0);
 				
 				switch (choice) {
+				// Attack
 				case 'A': case 'a':
 					dmg = player.attack(monster);
 					hit = monster.attack(dmg);
 					System.out.printf("You dealt %d points of damage, and you received %d points.\n", dmg, hit);
 					player.setHP(hit);
 					break;
+				// Berserk
 				case 'B': case 'b':
 					dmg = player.beserk(monster);
 					hit = 2 * monster.attack(dmg);
 					System.out.printf("You dealt %d points of damage, and you received %d points.\n", dmg, hit);
 					player.setHP(hit);
 					break;
+				// Magic
 				case 'M': case 'm':
 					dmg = 0;
 					hit = monster.attack(dmg);
@@ -45,6 +47,7 @@ public class Lab11 {
 					System.out.printf("You are healed! But the monster attacks for %d points\n", hit);
 					player.setHP(hit);
 					break;
+				// Run Away
 				case 'R': case 'r':
 					dmg = 5000;
 					hit = monster.attack(dmg);
@@ -54,24 +57,38 @@ public class Lab11 {
 					break;
 				}
 				
+				// Defeat
 				if (player.isAlive() == false) {
 					System.out.println("You have been vanquished by the " + monster.getName()+"...");
 					System.out.println("RIPEROONS!");
+					sc.close();
 					return;
 				}
+				
+				// Kill monster
 				if (monster.isAlive() == false && run == false) {
 					System.out.println("You have defeated the " + monster.getName() + "!");
 					tempGold = monster.getGold();
 					System.out.printf("You have gained %d gold pieces!\n", tempGold);
 					player.setGold(tempGold);
-					//System.out.println("Total Gold: " + player.getGold());
 				}
+				
+				// Victory
 				if (monster.getName() == "Dragon" && run == false && monster.isAlive() == false) {
 					System.out.println(". . . . . . . . . .\nYou have completed your quest!\n");
+					monster = new Goblin();
+					System.out.println("Goblins defeated: " + monster.getDefeats());
+					monster = new Troll();
+					System.out.println("Trolls defeated:  " + monster.getDefeats());
+					monster = new Dragon();
+					System.out.println("Dragons defeated: " + monster.getDefeats());
+					System.out.println("Total Gold: " + player.getGold());
+					sc.close();
 					return;
 				}
 			} while (monster.isAlive() == true);
 		} while (player.isAlive() == true);
+		sc.close();
 	}
 	
 	// Randomly generates monster type
